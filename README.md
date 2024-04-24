@@ -23,6 +23,27 @@
 2. Make the file executable using the command: **`chmod +x prepnote.sh`**.
 3. Place the file in a directory included in your PATH environment variable, such as **`/usr/local/bin`** or **`~/bin`**.
 
-Now, you can simply run prepnote followed by the desired folder name to create the folder structure.
+Now, you can simply run `prepnote followed` by the desired folder name to create the folder structure.
+for example `prepnote rickrick`
+
+sometimes it will want you to type `prepnote.sh rickrick` which is annoying, so to stop that
+
+1. **Add script to a directory in PATH**: Move the `prepnote.sh` script to a directory that is included in your PATH environment variable. For example, you can move it to `/usr/local/bin`:
+   ```
+   sudo mv prepnote.sh /usr/local/bin/prepnote
+   or
+   sudo mv /bin/prepnote.sh /usr/local/bin/prepnote
+   ```
+   This command will move the script to `/usr/local/bin` and rename it to prepnote (without the .sh extension). Now you can run it as `prepnote rickrick`.
+2. **Update the script name**: You can also rename the script to remove the .sh extension:
+   ```
+   mv prepnote.sh prepnote
+
+   or
+   mv /bin/prepnote.sh /bin/prepnote
+
+   ```
+   Then you should be able to type  `prepnote rickrick`
+   
 
 
