@@ -268,8 +268,8 @@ alias l='ls -CF'
 alias c='clear'
 alias config='subl ~/.zshrc' # modify the .zshrc file with subl
 alias labs='cd ~/lab/;ls' # change to lab directory and list content
-alias fscan='nmap -sV -sC -T4 -p- $1 -oN full-scan.log' # do the nmap full can
-alias qscan='nmap -sV -T4 -p- $1 --open -oN quick-scan.log' # check for open ports and their versions
+alias fscan='nmap -sV -sC -T4 -p- $1 -oN full-scan' # do the nmap full can
+alias qscan='nmap -sV -T4 -p- $1 --open -oN quick-scan' # check for open ports and their versions
 alias thmvpn='openvpn ~/Downloads/AmweCodex.ovpn' # connect to tryhackme vpn
 alias rthmvpn='rm ~/Downloads/*.ovpn'
 
