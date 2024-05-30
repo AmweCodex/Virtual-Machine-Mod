@@ -152,6 +152,7 @@ alias fscan='nmap -sV -sC -T4 -p- $1 -oN full-scan' # do the nmap full can
 alias qscan='nmap -sV -T4 -p- $1 --open -oN quick-scan' # check for open ports and their versions
 alias thmvpn='openvpn ~/Downloads/AmweCodex.ovpn' # connect to tryhackme vpn
 alias rthmvpn='rm ~/Downloads/*.ovpn'
+alias revshell='(cd /opt/rshell/ && docker build -t rshell2 . && docker run -d -p 8001:80 rshell2)'
 
 # Alias definitions.
 # You may want to put all your additions into a separate file like
