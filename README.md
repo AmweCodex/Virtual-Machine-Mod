@@ -77,7 +77,7 @@ docker run -d -p 1340:80 rshell
 you can add this alias on `~/.zshrc` or `~/.bashrc`
 
 ```
-alias revshell='(cd /opt/rshell/ && docker build -t rshell . && docker run -d -p 1339:80 rshell)'
+alias revshell='(cd /opt/rshell/ && docker build -t rshell . && docker run -d --restart always -p 1339:80 rshell)'
 ```
 **Note the pathe is `/opt/rshell/`**
 
