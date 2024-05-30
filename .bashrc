@@ -152,7 +152,8 @@ alias fscan='nmap -sV -sC -T4 -p- $1 -oN full-scan' # do the nmap full can
 alias qscan='nmap -sV -T4 -p- $1 --open -oN quick-scan' # check for open ports and their versions
 alias thmvpn='openvpn ~/Downloads/AmweCodex.ovpn' # connect to tryhackme vpn
 alias rthmvpn='rm ~/Downloads/*.ovpn'
-alias revshell='(cd /opt/rshell/ && docker build -t rshell2 . && docker run -d -p 8001:80 rshell2)'
+alias revshell='(cd /opt/rshell/ && docker build -t rshell . && docker run -d --restart always -p 1339:80 rshell)'
+alias juiceshop='(cd ~/vulWeb/juice-shop && npm start)'
 
 # Alias definitions.
 # You may want to put all your additions into a separate file like
