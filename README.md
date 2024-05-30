@@ -45,5 +45,39 @@ sometimes it will want you to type `prepnote.sh rickrick` which is annoying, so 
    ```
    Then you should be able to type  `prepnote rickrick`
    
+## reverse-shell-generator
 
+### Features
+- Generate common listeners and reverse shells
+- Save button to download Payloads from browser.
+- Raw mode to cURL shells to your machine.
+- Button to increment the listening port number by 1
+- URI and Base64 encoding
+- LocalStorage to persist your configuration
+- Dark, Light and Meme Modes
+- HoaxShell integration with custom listener (see link below for more information) | Credit: https://github.com/t3l3machus
+
+![image](https://user-images.githubusercontent.com/70012972/169376352-e6d6b90e-2e2e-46b0-b6f9-0e3f13713e39.png)
+
+### Fist thing first
+```
+git clone https://github.com/0dayCTF/reverse-shell-generator.git
+```
+### Change the folder name to `rshell`
+```
+mv reverse-shell-generator rshell
+```
+### Build and run
+```
+docker build -t rshell .
+
+docker run -d -p 1340:80 rshell
+```
+## OR
+you can add this alias on `~/.zshrc` or `~/.bashrc`
+
+```
+alias revshell='(cd /opt/rshell/ && docker build -t rshell2 . && docker run -d -p 8001:80 rshell2)'
+```
+**Note the pathe is `/opt/rshell/`**
 
