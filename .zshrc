@@ -48,7 +48,7 @@ zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
 
 # History configurations
 HISTFILE=~/.zsh_history
-HISTSIZE=1000
+HISTSIZE=500
 SAVEHIST=2000
 setopt hist_expire_dups_first # delete duplicates first when HISTFILE size exceeds HISTSIZE
 setopt hist_ignore_dups       # ignore duplicated commands history list
@@ -272,8 +272,14 @@ alias fscan='nmap -sV -sC -T4 -p- $1 -oN full-scan' # do the nmap full can
 alias qscan='nmap -sV -T4 -p- $1 --open -oN quick-scan' # check for open ports and their versions
 alias thmvpn='openvpn ~/Downloads/AmweCodex.ovpn' # connect to tryhackme vpn
 alias rthmvpn='rm ~/Downloads/*.ovpn'
-alias revshell='(cd /opt/rshell/ && docker build -t rshell . && docker run -d --restart always -p 1339:80 rshell)'
-alias juiceshop='(cd ~/vulWeb/juice-shop && npm start)'
+alias revshell='(cd ~/Tools/rshell/ && sudo docker build -t rshell . && sudo docker run -d --restart always -p 1339:80 rshell)'
+alias juiceshop='(cd ~/vulnWeb/juice-shop && npm start)'
+alias breakouts='clear;cat ~/Tools/usefull/breakouts'
+alias common='clear;cat ~/Tools/usefull/common'
+alias lprivesc='clear;cat ~/Tools/usefull/lprivesc'
+alias hostf='sudo subl /etc/hosts'
+alias chostf='cat /etc/hosts'
+
 
 # enable auto-suggestions based on the history
 #if [ -f /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]; then
