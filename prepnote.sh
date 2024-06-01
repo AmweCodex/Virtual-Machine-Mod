@@ -13,6 +13,6 @@ folder_name=$1
 mkdir "$folder_name"
 
 # Create subfolders 'enum', 'exploit', and 'loot' inside the main folder
-mkdir "$folder_name/enum" "$folder_name/exploit" "$folder_name/loot"
+mkdir "$folder_name/enum" "$folder_name/exploit" "$folder_name/loot" "$folder_name/files"
 
 
