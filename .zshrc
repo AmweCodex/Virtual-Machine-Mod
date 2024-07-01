@@ -48,8 +48,8 @@ zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
 
 # History configurations
 HISTFILE=~/.zsh_history
-HISTSIZE=500
-SAVEHIST=2000
+HISTSIZE=1000
+SAVEHIST=1000
 setopt hist_expire_dups_first # delete duplicates first when HISTFILE size exceeds HISTSIZE
 setopt hist_ignore_dups       # ignore duplicated commands history list
 setopt hist_ignore_space      # ignore commands that start with space
@@ -92,6 +92,7 @@ if [ -n "$force_color_prompt" ]; then
 fi
 
 # Function to configure prompt
+
 configure_prompt() {
     prompt_symbol=㉿
     # Check if tun0 interface exists
@@ -233,6 +234,51 @@ precmd() {
     fi
 }
 
+
+transfere() {
+    # Clear the terminal
+    clear
+
+    # List the files in the directory
+    ls -l --color=auto
+
+    # Get the local IP address
+    if ip link show tun0 &> /dev/null; then
+        # Get IP address of tun0
+        ip_address=$(ip addr show tun0 | grep -oE "\b([0-9]{1,3}\.){3}[0-9]{1,3}\b" | head -n 1)
+    else
+        # Get IP address of machine or eth0
+        ip_address=$(hostname -I | cut -d' ' -f1)
+    fi
+
+    # Define the port
+    local port=1335
+    # Display the wget command in red
+
+    RED='\033[1;31m'
+    NC='\033[0m' # No Color
+
+    # Check if the port is in use and kill the process using it
+    if lsof -Pi :$port -sTCP:LISTEN -t >/dev/null ; then
+        pid=$(lsof -t -i :$port)
+        (kill -9 $pid)
+
+        # Start the HTTP server
+        python -m SimpleHTTPServer $port > /dev/null 2>&1 &
+        echo -e "${RED}                 === We are online ===\n"
+        # Display the wget command
+        echo -e "${RED}On Target: wget http://$ip_address:$port/filename${NC}"
+    else
+        # Start the HTTP server
+        python -m SimpleHTTPServer $port > /dev/null 2>&1 &
+        echo -e "${RED}                 === We are online ===\n"
+        # Display the wget command
+        echo -e "${RED}On Target: wget http://$ip_address:$port/filename${NC}"
+    fi
+
+}
+
+
 # enable color support of ls, less and man, and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
@@ -268,17 +314,20 @@ alias l='ls -CF'
 alias c='clear'
 alias config='subl ~/.zshrc' # modify the .zshrc file with subl
 alias labs='cd ~/lab/;ls' # change to lab directory and list content
-alias fscan='nmap -sV -sC -T4 -p- $1 -oN full-scan' # do the nmap full can
+alias fscan='nmap -sV -sC -O -T4 -p- $1 -oN full-scan' # do the nmap full can
 alias qscan='nmap -sV -T4 -p- $1 --open -oN quick-scan' # check for open ports and their versions
 alias thmvpn='openvpn ~/Downloads/AmweCodex.ovpn' # connect to tryhackme vpn
 alias rthmvpn='rm ~/Downloads/*.ovpn'
 alias revshell='(cd ~/Tools/rshell/ && sudo docker build -t rshell . && sudo docker run -d --restart always -p 1339:80 rshell)'
 alias juiceshop='(cd ~/vulnWeb/juice-shop && npm start)'
-alias breakouts='clear;cat ~/Tools/usefull/breakouts'
-alias common='clear;cat ~/Tools/usefull/common'
-alias lprivesc='clear;cat ~/Tools/usefull/lprivesc'
+alias breakouts='clear;~/Tools/usefull/breakouts'
+alias common='clear;~/Tools/usefull/common'
+alias linesc='clear;~/Tools/usefull/linesc'
 alias hostf='sudo subl /etc/hosts'
 alias chostf='cat /etc/hosts'
+alias hashid='hash-identifier'
+alias ntwk='netdiscover -r 10.20.30.0/24'
+alias fixhist='echo "" > ~/.zsh_history && echo "History file has been reset."'
 
 
 # enable auto-suggestions based on the history
