@@ -26,81 +26,119 @@ grep -oE '((1?[0-9][0-9]?|2[0-4][0-9]|25[0-5])\.){3}(1?[0-9][0-9]?|2[0-4][0-9]|2
 ============================Wpscan=========================
 ===WPScan & SSL
 
-wpscan --url $URL --disable-tls-checks --enumerate p --enumerate t --enumerate u
+unbuffer wpscan --url http://... --disable-tls-checks --enumerate p --enumerate t --enumerate u | tee wpscan1
 
 ===WPScan Brute Forcing:
 
-wpscan --url $URL --disable-tls-checks -U users -P /usr/share/wordlists/rockyou.txt
+unbuffer wpscan --url http://... --disable-tls-checks -U users -P /usr/share/wordlists/rockyou.txt | tee wpscanBruteForce
 
 ===Aggressive Plugin Detection:
 
-wpscan --url $URL --enumerate p --plugins-detection aggressive
+unbuffer wpscan --url http://... --enumerate p --plugins-detection aggressive | tee wpscanPluginDet
+
+============================Drupal scan=========================
+===Drupal
+
+unbuffer droopescan scan drupal -u http://... | tee drupal-scan
+
+
+usage: droopescan (sub-commands ...) [options ...] {arguments ...}
+
+cms scanning functionality.
+
+commands:
+
+  drupal
+    drupal related scanning tools
+
+  joomla
+    joomla related scanning tools
+
+  moodle
+    Moodle scanner
+
+  silverstripe
+    silverstripe related scanning tools
+
+  wordpress
+    wordpress related scanning tools
+
+Example invocations: 
+  droopescan scan drupal -u URL_HERE
+  droopescan scan silverstripe -u URL_HERE
 
 ============================Nikto =========================
+===Nikto normal
+unbuffer nikto --host $IP | tee nikto_scan1
+
 ===Nikto with SSL and Evasion
 
-nikto --host $IP -ssl -evasion 1
-SEE EVASION MODALITIES.
+unbuffer nikto --host $IP -ssl -evasion 1 | tee nikto_scan2
+
 
 ===========================DNS============================
 ===dns_recon
 
-dnsrecon –d yourdomain.com
+unbuffer dnsrecon –d yourdomain.com | tee dnsrecon_1
 
 ========================gobuster ========================
 ===gobuster directory
 
-unbuffer gobuster dir -u $URL -w /usr/share/wordlists/seclists/SecLists/Discovery/Web-Content/raft-medium-directories.txt -k -t 30 | tee gobuster-scan1
+unbuffer gobuster dir -u http://... -w /usr/share/wordlists/seclists/SecLists-master/Discovery/Web-Content/raft-medium-directories.txt -k -t 30 | tee gobuster-scan1
 
 ===gobuster files
 
-unbuffer gobuster dir -u $URL -w /usr/share/wordlists/seclists/SecLists/SecLists/Discovery/Web-Content/raft-medium-files.txt -k -t 30 | tee gobuster-scan1
+unbuffer gobuster dir -u http://... -w /usr/share/wordlists/seclists/SecLists-master/Discovery/Web-Content/raft-medium-files.txt -k -t 30 | tee gobuster-scan2
 
 ===gobuster for SubDomain brute forcing:
 
-unbuffer gobuster dns -d domain.org -w /usr/share/wordlists/seclists/SecLists/SecLists/Discovery/DNS/subdomains-top1million-110000.txt -t 30 | tee gobuster-scan1
+unbuffer gobuster dns -d domain.org -w /usr/share/wordlists/seclists/SecLists-master/Discovery/DNS/subdomains-top1million-110000.txt -t 30 | tee gobuster-scan3
 
 "just make sure any DNS name you find resolves to an in-scope address before you test it"
 
 =======================Wfuzz ==========================
+===FUZZ Directories:
+
+wfuzz -c -z file,/usr/share/wordlists/seclists/SecLists-master/Discovery/Web-Content/raft-large-directories.txt --hc 404 "http://.../FUZZ" | tee fuzzDIR
+
+===FUZZ FILES:
+
+wfuzz -c -z file,/usr/share/wordlists/seclists/SecLists-master/Discovery/Web-Content/raft-large-files.txt --hc 404 "http://.../FUZZ" | tee fuzzFIL
+
 ===Wfuzz XSS Fuzzing====
 
-wfuzz -c -z file,/usr/share/wordlists/seclists/SecLists/Fuzzing/XSS/XSS-BruteLogic.txt "$URL"
-wfuzz -c -z file,/usr/share/wordlists/seclists/SecLists/Fuzzing/XSS/XSS-Jhaddix.txt "$URL"
+wfuzz -c -z /usr/share/wordlists/seclists/SecLists-master/Fuzzing/XSS/human-friendly/XSS-BruteLogic.txt "http://.../FUZZ" | tee wfuzz_1
+wfuzz -c -z /usr/share/wordlists/seclists/SecLists-master/Fuzzing/XSS/human-friendly/XSS-Jhaddix.txt "http://.../FUZZ" | tee wfuzz_2
 
 ===COMMAND INJECTION WITH POST DATA
 
-wfuzz -c -z file,/usr/share/wordlists/seclists/SecLists/Fuzzing/command-injection-commix.txt -d "doi=FUZZ" "$URL"
+wfuzz -c -z file,/usr/share/wordlists/seclists/SecLists-master/Fuzzing/command-injection-commix.txt -d "doi=FUZZ" "http://.../FUZZ"
+
 ===Test for Paramter Existence!
 
-wfuzz -c -z file,/usr/share/wordlists/seclists/SecLists/Discovery/Web-Content/burp-parameter-names.txt "$URL"
+wfuzz -c -z file,/usr/share/wordlists/seclists/SecLists-master/Discovery/Web-Content/burp-parameter-names.txt "http://.../FUZZ"
+
 ===AUTHENTICATED FUZZING DIRECTORIES:
 
-wfuzz -c -z file,/usr/share/wordlists/seclists/SecLists/Discovery/Web-Content/raft-medium-directories.txt --hc 404 -d "SESSIONID=value" "$URL"
+wfuzz -c -z file,/usr/share/wordlists/seclists/SecLists-master/Discovery/Web-Content/raft-medium-directories.txt --hc 404 -d "SESSIONID=value" "http://.../FUZZ"
+
 ===AUTHENTICATED FILE FUZZING:
 
-wfuzz -c -z file,/usr/share/wordlists/seclists/SecLists/Discovery/Web-Content/raft-medium-files.txt --hc 404 -d "SESSIONID=value" "$URL"
-===FUZZ Directories:
+wfuzz -c -z file,/usr/share/wordlists/seclists/SecLists-master/Discovery/Web-Content/raft-medium-files.txt --hc 404 -d "SESSIONID=value" "http://.../FUZZ"
 
-wfuzz -c -z file,/usr/share/wordlists/seclists/SecLists/Discovery/Web-Content/raft-large-directories.txt --hc 404 "$URL"
-===FUZZ FILES:
+===LARGE WORDS:
 
-wfuzz -c -z file,/usr/share/wordlists/seclists/SecLists/Discovery/Web-Content/raft-large-files.txt --hc 404 "$URL"
-|
+wfuzz -c -z file,/usr/share/wordlists/seclists/SecLists-master/Discovery/Web-Content/raft-large-words.txt --hc 404 "http://.../FUZZ"
 
-LARGE WORDS:
+===USERS:
 
-wfuzz -c -z file,/usr/share/wordlists/seclists/SecLists/Discovery/Web-Content/raft-large-words.txt --hc 404 "$URL"
-|
+wfuzz -c -z file,/usr/share/wordlists/seclists/SecLists-master/Usernames/top-usernames-shortlist.txt --hc 404,403 "http://.../FUZZ"
 
-USERS:
-
-wfuzz -c -z file,/usr/share/wordlists/seclists/SecLists/Usernames/top-usernames-shortlist.txt --hc 404,403 "$URL"
 =======================SQLMap==========================
 ===SQLMap
 
-sqlmap -u $URL --threads=2 --time-sec=10 --level=2 --risk=2 --technique=T --force-ssl
-sqlmap -u $URL --threads=2 --time-sec=10 --level=4 --risk=3 --dump
+sqlmap -u http://... --threads=2 --time-sec=10 --level=2 --risk=2 --technique=T --force-ssl
+sqlmap -u http://... --threads=2 --time-sec=10 --level=4 --risk=3 --dump
 /SecLists/Fuzzing/alphanum-case.txt
 
 ======================Social Recon=======================
@@ -110,10 +148,10 @@ theharvester -d domain.org -l 500 -b google
 ====================SMTP USER ENUM======================
 ===SMTP USER ENUM
 
-smtp-user-enum -M VRFY -U /usr/share/wordlists/seclists/SecLists/Usernames/xato-net-10-million-usernames.txt -t $IP
-smtp-user-enum -M EXPN -U /usr/share/wordlists/seclists/SecLists/Usernames/xato-net-10-million-usernames.txt -t $IP
-smtp-user-enum -M RCPT -U /usr/share/wordlists/seclists/SecLists/Usernames/xato-net-10-million-usernames.txt -t $IP
-smtp-user-enum -M EXPN -U /usr/share/wordlists/seclists/SecLists/Usernames/xato-net-10-million-usernames.txt -t $IP
+smtp-user-enum -M VRFY -U /usr/share/wordlists/seclists/SecLists-master/Usernames/xato-net-10-million-usernames.txt -t $IP
+smtp-user-enum -M EXPN -U /usr/share/wordlists/seclists/SecLists-master/Usernames/xato-net-10-million-usernames.txt -t $IP
+smtp-user-enum -M RCPT -U /usr/share/wordlists/seclists/SecLists-master/Usernames/xato-net-10-million-usernames.txt -t $IP
+smtp-user-enum -M EXPN -U /usr/share/wordlists/seclists/SecLists-master/Usernames/xato-net-10-million-usernames.txt -t $IP
 =======================================================
 ===Command Injection with commix, ssl, waf, random agent.
 
@@ -121,5 +159,4 @@ commix --url="https://supermegaleetultradomain.com?parameter=" --level=3 --force
 ===Command Execution Verification - [Ping check]
 
 tcpdump -i any -c5 icmp
-
 
