@@ -317,7 +317,7 @@ alias labs='cd ~/lab/;ls' # change to lab directory and list content
 alias fscan='nmap -sV -sC -O -T4 -p- $1 -oN full-scan' # do the nmap full can
 alias qscan='nmap -sV -T4 -p- $1 --open -oN quick-scan' # check for open ports and their versions
 alias thmvpn='sudo openvpn ~/Downloads/AmweCodex.ovpn' # connect to tryhackme vpn
-alias rthmvpn='rm ~/Downloads/*.ovpn'
+alias rthmvpn='sudo rm ~/Downloads/*.ovpn'
 alias revshell='(cd ~/Tools/rshell/ && sudo docker build -t rshell . && sudo docker run -d --restart always -p 1339:80 rshell)'
 alias juiceshop='(cd ~/vulnWeb/juice-shop && npm start)'
 alias breakouts='clear;~/Tools/usefull/breakouts'
@@ -326,7 +326,7 @@ alias linesc='clear;~/Tools/usefull/linesc'
 alias hostf='sudo subl /etc/hosts'
 alias chostf='cat /etc/hosts'
 alias hashid='hash-identifier'
-alias ntwk='netdiscover -r 10.20.30.0/24'
+alias ntwk='sudo netdiscover -r 10.20.30.0/24'
 alias fixhist='echo "" > ~/.zsh_history && echo "History file has been reset."'
 
 
