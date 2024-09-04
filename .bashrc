@@ -150,8 +150,8 @@ alias config2='subl ~/.bashrc' # modify the .zshrc file with subl
 alias labs='cd ~/lab/;ls' # change to lab directory and list content
 alias fscan='nmap -sV -sC -T4 -p- $1 -oN full-scan' # do the nmap full can
 alias qscan='nmap -sV -T4 -p- $1 --open -oN quick-scan' # check for open ports and their versions
-alias thmvpn='openvpn ~/Downloads/AmweCodex.ovpn' # connect to tryhackme vpn
-alias rthmvpn='rm ~/Downloads/*.ovpn'
+alias thmvpn='sudo openvpn ~/Downloads/AmweCodex.ovpn' # connect to tryhackme vpn
+alias rthmvpn='sudo rm ~/Downloads/*.ovpn'
 alias revshell='(cd /opt/rshell/ && docker build -t rshell . && docker run -d --restart always -p 1339:80 rshell)'
 alias juiceshop='(cd ~/vulWeb/juice-shop && npm start)'
 
