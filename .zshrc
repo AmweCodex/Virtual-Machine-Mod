@@ -94,7 +94,7 @@ fi
 # Function to configure prompt
 
 configure_prompt() {
-    prompt_symbol=㉿
+    prompt_symbol=💀
     # Check if tun0 interface exists
     if ip link show tun0 &> /dev/null; then
         # Get IP address of tun0
@@ -129,7 +129,7 @@ fi
 
 # Configure prompt explicitly for root user
 if [[ $UID -eq 0 ]]; then
-    prompt_symbol=㉿
+    prompt_symbol=💀
     ip_address=$(hostname -I | cut -d' ' -f1)
     PROMPT=$'%F{%(#.blue.green)}┌──(Hacking %F{%(#.cyan.green)}'$ip_address$'%f)─[%F{%(#.red.blue)}%n'$prompt_symbol$'%m%F{%(#.blue.green)}]─[%f%F{%(#.cyan.green)}%~%F{%(#.blue.green)}]%f\n└─%B%(#.%F{red}#.%F{blue}$)%b%F{reset} '
 fi
